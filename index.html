@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Секундомер онлайн — бесплатный, с кругами и точностью до сотых</title>
+<meta name="description" content="Бесплатный секундомер онлайн с точностью до сотых секунды. Засекайте время и круги, ставьте паузу, сохраняйте результаты и включайте полный экран на телефоне или компьютере.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Секундомер онлайн — бесплатно и точно">
+<meta property="og:description" content="Измеряйте время с точностью до сотых секунды, фиксируйте круги и сохраняйте результаты прямо в браузере.">
+<meta name="robots" content="index,follow">
+<style>
+:root{--bg:#eef1f5;--sf:#fff;--tx:#17212e;--mu:#68788c;--ln:#d8dfe8;--ac:#2f6fe0;--dn:#d64545;--lp:#d98200;--side:#333f50;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#121923;--sf:#1b2533;--tx:#e8eef5;--mu:#8fa0b5;--ln:#2c394a;--ac:#5b97ff;--lp:#f0a830;--side:#263140}}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Segoe UI",Roboto,Arial,sans-serif;display:flex;min-height:100vh}
+#side{width:290px;flex:none;background:var(--side);color:#fff;position:sticky;top:0;height:100vh;overflow:auto;padding:22px 24px 30px}
+#side a,#side summary{display:block;color:#fff;text-decoration:none;font-weight:700;font-size:18px;padding:10px 0;cursor:pointer}
+#side details a{font-weight:400;font-size:16px;padding:6px 0 6px 22px;color:#d3dbe7}
+#side a:hover,#side summary:hover{color:#9cc3ff}
+#side a.on{color:#7db4ff}
+.bb{background:#222b38;border:0;color:#fff;font-size:26px;width:52px;height:46px;border-radius:9px;cursor:pointer;margin-bottom:10px}
+.top{display:none}
+#main{flex:1;min-width:0;padding:clamp(16px,4vw,44px) clamp(14px,4vw,40px) 40px;max-width:980px;margin:0 auto}
+h1{font-size:clamp(22px,4vw,32px);margin:0 0 20px;text-align:center}
+h2{font-size:20px}
+.pn{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:clamp(18px,5vw,36px) clamp(10px,3vw,26px);text-align:center}
+.big{font-variant-numeric:tabular-nums;font-weight:300;font-size:clamp(38px,10vw,96px);line-height:1.1;white-space:nowrap}
+.big small{font-size:.5em;color:var(--mu)}
+.sub{font-variant-numeric:tabular-nums;font-size:clamp(20px,5vw,36px);color:var(--lp);white-space:nowrap}
+.mu{color:var(--mu);font-size:14px}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px;align-items:center}
+.btn{min-width:110px;padding:13px 24px;font:600 17px inherit;font-family:inherit;border-radius:12px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);cursor:pointer}
+.btn:hover{background:var(--bg)}
+.btn.go{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn.go.run{background:var(--dn);border-color:var(--dn)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,input:focus-visible,select:focus-visible,#side :focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+input,select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);max-width:100%}
+input[type=number]{width:96px}
+label{display:flex;flex-direction:column;gap:4px;text-align:left;font-size:14px;color:var(--mu)}
+.res{font-size:clamp(22px,5vw,38px);font-weight:600;margin-top:20px}
+.wrap{overflow-x:auto;margin-top:20px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;background:var(--sf);border:1px solid var(--ln)}
+th,td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--ln)}
+th{color:var(--mu);font-size:14px}
+tr.best td:nth-child(2){color:#1a9b4f;font-weight:600}tr.worst td:nth-child(2){color:var(--dn);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:14px;text-align:center}
+.card b{display:block;font-size:26px;font-variant-numeric:tabular-nums;font-weight:400}
+.cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.cal table{font-size:13px}.cal th,.cal td{padding:3px;border:0}.cal caption{font-weight:700;padding:6px}
+td.today{background:var(--ac);color:#fff;border-radius:6px}
+.art{max-width:70ch;margin:30px auto 0;color:var(--mu)}
+.seo-copy h2{margin-top:22px;color:var(--tx)}
+.site-footer{max-width:70ch;margin:44px auto 0;padding:20px 10px 0;border-top:1px solid var(--ln);text-align:center;font-size:14px}
+.site-footer a{color:var(--ac);font-weight:700;text-underline-offset:3px}
+#sw:fullscreen,#tmr:fullscreen{display:flex;flex-direction:column;justify-content:center;background:var(--bg)}
+#sw:fullscreen .big{font-size:min(16vw,28vh)}
+@media (max-width:860px){
+ #side{position:fixed;inset:0;width:100%;height:100%;z-index:10;transform:translateX(-100%);transition:transform .2s}
+ body.open #side{transform:none}
+ .top{display:block;position:sticky;top:env(safe-area-inset-top,0px);background:var(--side);padding:8px 12px;z-index:5}
+ .top .bb{margin:0}
+ body{flex-direction:column}
+}
+@media (min-width:861px){body.shut #side{display:none}body.shut .top{display:block;position:fixed;top:env(safe-area-inset-top,0px);left:0;z-index:5;padding:14px 16px}body.shut .top .bb{background:var(--side)}body.shut #main{padding-left:calc(clamp(14px,4vw,40px) + 64px)}}
+@media (prefers-reduced-motion:reduce){#side{transition:none}}
+</style>
+</head>
+<body>
+<aside id="side"><button class="bb" id="cls" aria-label="Меню">☰</button><nav id="nav"></nav></aside>
+<div class="top"><button class="bb" id="opn" aria-label="Открыть меню">☰</button></div>
+<main id="main"></main>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},M=$("main"),off=[],R={},MENU=[];
+function p(n,l){return String(n).padStart(l||2,"0")}
+function every(f,ms){f();var i=setInterval(f,ms);off.push(function(){clearInterval(i)})}
+function pl(n,a){n=Math.abs(n)%100;var d=n%10;return n>10&&n<20?a[2]:d>1&&d<5?a[1]:d==1?a[0]:a[2]}
+var D=["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"];
+var MN=["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+var AC=null;
+function beep(n){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.frequency.value=n||880;g.gain.setValueAtTime(.2,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+.25);o.start();o.stop(AC.currentTime+.26)}catch(e){}}
+function ds(d){return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())}
+function page(t,h){M.innerHTML="<h1>"+t+"</h1>"+h}
+function add(id,t,fn){R[id]=[t,fn]}
+function hms(ms){var s=Math.floor(ms/1000);return p(Math.floor(s/3600))+":"+p(Math.floor(s/60)%60)+":"+p(s%60)}
+
+/* ---- cities ---- */
+var C=[["Москва","Europe/Moscow",55.75,37.62],["Санкт-Петербург","Europe/Moscow",59.93,30.34],["Киев","Europe/Kyiv",50.45,30.52],["Минск","Europe/Minsk",53.9,27.57],["Ереван","Asia/Yerevan",40.18,44.51],["Тбилиси","Asia/Tbilisi",41.72,44.79],["Баку","Asia/Baku",40.41,49.87],["Алматы","Asia/Almaty",43.24,76.89],["Ташкент","Asia/Tashkent",41.3,69.24],["Новосибирск","Asia/Novosibirsk",55.03,82.92],["Владивосток","Asia/Vladivostok",43.12,131.89],["Лондон","Europe/London",51.51,-.13],["Париж","Europe/Paris",48.86,2.35],["Берлин","Europe/Berlin",52.52,13.4],["Дубай","Asia/Dubai",25.2,55.27],["Пекин","Asia/Shanghai",39.9,116.4],["Токио","Asia/Tokyo",35.68,139.69],["Сидней","Australia/Sydney",-33.87,151.21],["Нью-Йорк","America/New_York",40.71,-74.01],["Лос-Анджелес","America/Los_Angeles",34.05,-118.24]];
+function copts(sel){return C.map(function(c,i){return'<option value="'+i+'"'+(i==sel?" selected":"")+">"+c[0]+"</option>"}).join("")}
+function tz(c,o,d){return new Intl.DateTimeFormat("ru-RU",Object.assign({timeZone:c[1]},o)).format(d||new Date())}
+
+/* ---- stopwatch ---- */
+var S={acc:0,start:0,run:false,base:0,laps:[]},raf=0;
+try{var sv=JSON.parse(localStorage.getItem("sw1"));if(sv&&typeof sv.acc=="number")S=sv}catch(e){}
+function ssave(){try{localStorage.setItem("sw1",JSON.stringify(S))}catch(e){}}
+function snow(){return S.run?S.acc+Date.now()-S.start:S.acc}
+function fmt(ms){var c=Math.floor(ms/10)%100;return hms(ms)+"."+p(c)}
+add("stopwatch","Секундомер онлайн",function(){
+ page("Секундомер онлайн",'<section class="pn" id="sw"><div class="big" id="t"></div><div class="mu" style="margin-top:12px">Круг</div><div class="sub" id="l"></div><div class="row"><button class="btn go" id="go"></button><button class="btn" id="lap">Круг</button><button class="btn" id="rst">Сброс</button><button class="btn" id="fs" style="min-width:0" aria-label="На весь экран">⛶</button></div></section><div class="wrap"><table><thead><tr><th>Круг</th><th>Время круга</th><th>Общее время</th></tr></thead><tbody id="rows"></tbody></table></div><div class="art"><h2>Как пользоваться секундомером</h2><p>Нажмите «Старт», чтобы начать отсчёт. «Пауза» останавливает время, «Круг» фиксирует время круга, «Сброс» обнуляет всё. Состояние сохраняется в браузере и не пропадёт после обновления страницы. Клавиши: пробел — старт/пауза, L — круг, R — сброс.</p></div>');
+ function paint(){var t=snow(),a=hms(t);$("t").innerHTML=a+"<small>."+p(Math.floor(t/10)%100)+"</small>";$("l").textContent=fmt(t-S.base);document.title=(S.run?a+" · ":"")+"Секундомер онлайн"}
+ function loop(){paint();if(S.run)raf=requestAnimationFrame(loop)}
+ function rows(){var b=$("rows");if(!S.laps.length){b.innerHTML='<tr><td colspan="3" class="mu">Кругов пока нет</td></tr>';return}var mn=1e15,mx=-1;S.laps.forEach(function(x){mn=Math.min(mn,x.d);mx=Math.max(mx,x.d)});var h="";for(var i=S.laps.length-1;i>=0;i--){var x=S.laps[i],c=S.laps.length>2?(x.d==mn?"best":x.d==mx?"worst":""):"";h+='<tr class="'+c+'"><td>'+(i+1)+"</td><td>"+fmt(x.d)+"</td><td>"+fmt(x.t)+"</td></tr>"}b.innerHTML=h}
+ function ui(){$("go").textContent=S.run?"Пауза":S.acc>0?"Продолжить":"Старт";$("go").classList.toggle("run",S.run);$("lap").disabled=!S.run;$("rst").disabled=!S.run&&!S.acc;rows();paint()}
+ function tog(){if(S.run){S.acc+=Date.now()-S.start;S.run=false;cancelAnimationFrame(raf)}else{S.start=Date.now();S.run=true;loop()}ssave();ui()}
+ function lap(){if(!S.run)return;var t=snow();S.laps.push({d:t-S.base,t:t});S.base=t;ssave();ui()}
+ function rst(){cancelAnimationFrame(raf);S={acc:0,start:0,run:false,base:0,laps:[]};ssave();ui()}
+ $("go").onclick=tog;$("lap").onclick=lap;$("rst").onclick=rst;$("fs").onclick=function(){var e=$("sw");if(document.fullscreenElement)document.exitFullscreen();else if(e.requestFullscreen)e.requestFullscreen()};
+ var kd=function(e){if(/INPUT|SELECT/.test(e.target.tagName))return;if(e.code=="Space"){e.preventDefault();tog()}else if(/^[lд]$/i.test(e.key))lap();else if(/^[rк]$/i.test(e.key))rst()};
+ document.addEventListener("keydown",kd);off.push(function(){document.removeEventListener("keydown",kd);cancelAnimationFrame(raf);document.title="Секундомер онлайн"});
+ if(S.run)loop();ui()});
+
+/* ---- timer ---- */
+add("timer","Таймер онлайн",function(){
+ page("Таймер онлайн",'<section class="pn"><div class="big" id="tt"></div><div class="row"><button class="btn" data-m="1">+1 мин</button><button class="btn" data-m="5">+5 мин</button><button class="btn" data-m="10">+10 мин</button></div><div class="row"><button class="btn go" id="g"></button><button class="btn" id="r">Сброс</button></div></section>');
+ var T={left:300000,end:0,run:false};
+ function pt(){var l=T.run?Math.max(0,T.end-Date.now()):T.left;$("tt").textContent=hms(Math.ceil(l/1000)*1000);$("g").textContent=T.run?"Пауза":"Старт";$("g").classList.toggle("run",T.run);if(T.run&&l<=0){T.run=false;T.left=0;pt();[0,300,600].forEach(function(d){setTimeout(function(){beep(880)},d)})}}
+ every(pt,200);
+ $("g").onclick=function(){if(T.run){T.left=Math.max(0,T.end-Date.now());T.run=false}else if(T.left>0){T.end=Date.now()+T.left;T.run=true}pt()};
+ $("r").onclick=function(){T.run=false;T.left=300000;pt()};
+ [].forEach.call(document.querySelectorAll("[data-m]"),function(b){b.onclick=function(){var d=b.dataset.m*6e4;if(T.run)T.end+=d;else T.left+=d;pt()}})});
+
+/* ---- countdown / elapsed ---- */
+function cd(id,t,tf,past){add(id,t,function(){
+ page(t,'<section class="pn"><div class="big" id="d"></div><div class="big" id="h" style="font-size:clamp(28px,7vw,60px);margin-top:6px"></div><div class="mu" id="w" style="margin-top:12px"></div></section>');
+ every(function(){var T=tf(),x=past?Date.now()-T:T-Date.now(),dd=Math.floor(x/864e5);$("d").textContent=dd+" "+pl(dd,["день","дня","дней"]);$("h").textContent=hms(x%864e5);$("w").textContent=(past?"С ":"До ")+new Date(T).toLocaleString("ru-RU",{dateStyle:"long",timeStyle:"short"})},250)})}
+function nmd(m,d){return function(){var n=new Date(),t=new Date(n.getFullYear(),m,d);if(t<=n)t=new Date(n.getFullYear()+1,m,d);return t}}
+function nwd(w){return function(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate()+((w-n.getDay()+7)%7||7))}}
+cd("ny","Сколько осталось до Нового года",nmd(0,1));
+[["leto","до начала лета",5,1],["konec-leta","до конца лета",8,1],["osen","до начала осени",8,1],["konec-oseni","до конца осени",11,1],["zima","до начала зимы",11,1],["konec-zimy","до конца зимы",2,1],["vesna","до начала весны",2,1],["konec-vesny","до конца весны",5,1]].forEach(function(s){cd("s-"+s[0],"Сколько "+s[1],nmd(s[2],s[3]))});
+[["1-yanvarya","1 января",0],["1-marta","1 марта",2],["1-iyunya","1 июня",5],["1-sentyabrya","1 сентября",8]].forEach(function(s){cd("d-"+s[0],"Сколько дней до "+s[1],nmd(s[2],1))});
+[["ponedelnik","понедельника",1],["vtornik","вторника",2],["sreda","среды",3],["chetverg","четверга",4],["pyatnica","пятницы",5],["subbota","субботы",6],["voskresenye","воскресенья",0]].forEach(function(s){cd("w-"+s[0],"Сколько осталось до "+s[1],nwd(s[2]))});
+for(var y=2026;y>=2015;y--)(function(y){cd("y-"+y,"Сколько прошло с "+y+" года",function(){return new Date(y,0,1)},true)})(y);
+
+add("holidays","Праздники",function(){
+ var H=[["Новый год",0,1],["Рождество",0,7],["День защитника Отечества",1,23],["Международный женский день",2,8],["Праздник Весны и Труда",4,1],["День Победы",4,9],["День России",5,12],["День народного единства",10,4]];
+ page("Праздники",'<div class="grid">'+H.map(function(h){var n=nmd(h[1],h[2])(),d=Math.ceil((n-new Date())/864e5);return'<div class="card"><b>'+d+"</b>"+pl(d,["день","дня","дней"])+" до<br>"+h[0]+'<div class="mu">'+h[2]+" "+MN[h[1]]+"</div></div>"}).join("")+"</div>")});
+
+/* ---- time ---- */
+add("cities","Время в городах",function(){
+ page("Время в городах",'<div class="grid">'+C.map(function(c,i){return'<div class="card">'+c[0]+'<b id="c'+i+'"></b><div class="mu" id="e'+i+'"></div></div>'}).join("")+"</div>");
+ every(function(){C.forEach(function(c,i){$("c"+i).textContent=tz(c,{hour:"2-digit",minute:"2-digit",second:"2-digit"});$("e"+i).textContent=tz(c,{weekday:"short",day:"numeric",month:"long"})})},1000)});
+
+function sun(c,dt,rise){
+ var N=Math.floor((Date.UTC(dt.y,dt.m,dt.d)-Date.UTC(dt.y,0,0))/864e5),r=Math.PI/180,lh=c[3]/15,t=N+((rise?6:18)-lh)/24,Mm=.9856*t-3.289,
+ L=(Mm+1.916*Math.sin(Mm*r)+.02*Math.sin(2*Mm*r)+282.634+720)%360,RA=Math.atan(.91764*Math.tan(L*r))/r;RA=((RA+360)%360);RA+=Math.floor(L/90)*90-Math.floor(RA/90)*90;RA/=15;
+ var sd=.39782*Math.sin(L*r),cd=Math.cos(Math.asin(sd)),ch=(Math.cos(90.833*r)-sd*Math.sin(c[2]*r))/(cd*Math.cos(c[2]*r));if(ch>1||ch<-1)return null;
+ var H=(rise?360-Math.acos(ch)/r:Math.acos(ch)/r)/15,T=H+RA-.06571*t-6.622,UT=((T-lh)%24+24)%24;return Date.UTC(dt.y,dt.m,dt.d)+UT*36e5}
+add("sun","Восход и закат солнца",function(){
+ page("Восход и закат солнца",'<section class="pn"><div class="row" style="margin-top:0"><label>Город<select id="c">'+copts(0)+'</select></label><label>Дата<input type="date" id="dt" value="'+ds(new Date())+'"></label></div><div class="res" id="o"></div></section>');
+ function u(){var c=C[$("c").value],a=$("dt").value.split("-");if(a.length<3)return;var d={y:+a[0],m:a[1]-1,d:+a[2]},r=sun(c,d,1),s=sun(c,d,0),f=function(x){return x?tz(c,{hour:"2-digit",minute:"2-digit"},new Date(x)):"нет"};
+  $("o").innerHTML="🌅 Восход: "+f(r)+"<br>🌇 Закат: "+f(s)+(r&&s?'<div class="mu" style="margin-top:8px">Длина дня: '+hms(((s-r+864e5)%864e5)).slice(0,5)+" (время "+c[0]+")</div>":"")}
+ $("c").onchange=u;$("dt").oninput=u;u()});
+add("plus","Сколько будет через",function(){
+ page("Сколько будет через",'<section class="pn"><div class="row" style="margin-top:0"><label>Часы<input type="number" id="h" value="1" min="0"></label><label>Минуты<input type="number" id="m" value="30" min="0"></label><label>Секунды<input type="number" id="s" value="0" min="0"></label></div><div class="res" id="o"></div></section>');
+ every(function(){var t=new Date(Date.now()+(+$("h").value*3600+ +$("m").value*60+ +$("s").value)*1000);$("o").innerHTML=t.toLocaleTimeString("ru-RU")+'<div class="mu">'+t.toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"})+"</div>"},1000)});
+add("date-plus","Какое число будет через",function(){
+ page("Какое число будет через",'<section class="pn"><label style="align-items:center">Дней<input type="number" id="n" value="30"></label><div class="res" id="o"></div></section>');
+ function u(){var t=new Date();t.setDate(t.getDate()+ +$("n").value);$("o").textContent=t.toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}$("n").oninput=u;u()});
+add("until","Сколько осталось до",function(){
+ var d=new Date(Date.now()+864e5);
+ page("Сколько осталось до",'<section class="pn"><input type="datetime-local" id="dt" value="'+ds(d)+'T12:00"><div class="big" id="d" style="margin-top:20px"></div><div class="big" id="h" style="font-size:clamp(28px,7vw,60px)"></div></section>');
+ every(function(){var x=new Date($("dt").value)-Date.now();if(isNaN(x))return;var n=x<0?"Прошло: ":"";x=Math.abs(x);var dd=Math.floor(x/864e5);$("d").textContent=n+dd+" "+pl(dd,["день","дня","дней"]);$("h").textContent=hms(x%864e5)},250)});
+add("weekday","День недели по дате",function(){
+ page("День недели по дате",'<section class="pn"><input type="date" id="dt" value="'+ds(new Date())+'"><div class="res" id="o"></div></section>');
+ function u(){var a=$("dt").value.split("-");if(a.length<3)return;var d=new Date(+a[0],a[1]-1,+a[2]);$("o").textContent=D[d.getDay()]}$("dt").oninput=u;u()});
+
+/* ---- tools ---- */
+add("clock","Стрелочные часы",function(){
+ var tk="";for(var i=0;i<60;i++){var a=i*6,l=i%5?4:10;tk+='<line x1="100" y1="'+(8)+'" x2="100" y2="'+(8+l)+'" stroke="currentColor" stroke-width="'+(i%5?1:2.5)+'" transform="rotate('+a+' 100 100)"/>'}
+ page("Стрелочные часы",'<section class="pn"><svg viewBox="0 0 200 200" style="width:min(80vw,420px);color:var(--tx)"><circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="3"/>'+tk+'<line id="hh" x1="100" y1="100" x2="100" y2="55" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><line id="mm" x1="100" y1="100" x2="100" y2="35" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><line id="ss" x1="100" y1="112" x2="100" y2="25" stroke="#d64545" stroke-width="1.6"/><circle cx="100" cy="100" r="4" fill="#d64545"/></svg><div class="res" id="o"></div></section>');
+ every(function(){var n=new Date(),s=n.getSeconds()+n.getMilliseconds()/1000;$("ss").setAttribute("transform","rotate("+s*6+" 100 100)");$("mm").setAttribute("transform","rotate("+(n.getMinutes()+s/60)*6+" 100 100)");$("hh").setAttribute("transform","rotate("+((n.getHours()%12)+n.getMinutes()/60)*30+" 100 100)");$("o").textContent=n.toLocaleTimeString("ru-RU")},100)});
+add("metronome","Метроном",function(){
+ page("Метроном",'<section class="pn"><div class="big" id="b">100</div><div class="mu">ударов в минуту</div><div class="row"><input type="range" id="r" min="30" max="240" value="100" style="width:min(80%,420px)"></div><div class="row"><button class="btn go" id="g">Старт</button></div></section>');
+ var iv=0,n=0;function stop(){clearInterval(iv);iv=0;$("g").textContent="Старт";$("g").classList.remove("run")}
+ function go(){clearInterval(iv);iv=setInterval(function(){beep(n++%4?660:990)},60000/$("r").value)}
+ $("r").oninput=function(){$("b").textContent=this.value;if(iv)go()};
+ $("g").onclick=function(){if(iv)stop();else{n=0;beep(990);go();this.textContent="Стоп";this.classList.add("run")}};off.push(function(){clearInterval(iv)})});
+add("alarm","Будильник",function(){
+ page("Будильник",'<section class="pn"><input type="time" id="t" value="07:00" style="font-size:32px"><div class="row"><button class="btn go" id="g">Включить</button></div><div class="res" id="o"></div></section>');
+ var on=false;$("g").onclick=function(){on=!on;this.textContent=on?"Выключить":"Включить";this.classList.toggle("run",on);$("o").textContent=on?"Сработает в "+$("t").value:""};
+ every(function(){var n=new Date();if(on&&n.getSeconds()<2&&p(n.getHours())+":"+p(n.getMinutes())==$("t").value){$("o").textContent="⏰ Пора!";beep(880);setTimeout(function(){beep(880)},400)}},1000)});
+add("age","Калькулятор возраста",function(){
+ page("Калькулятор возраста",'<section class="pn"><label style="align-items:center">Дата рождения<input type="date" id="dt" value="1990-01-01"></label><div class="res" id="o"></div></section>');
+ function u(){var a=$("dt").value.split("-");if(a.length<3)return;var b=new Date(+a[0],a[1]-1,+a[2]),n=new Date(),y=n.getFullYear()-b.getFullYear(),m=n.getMonth()-b.getMonth(),d=n.getDate()-b.getDate();if(d<0){m--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate()}if(m<0){y--;m+=12}
+  $("o").innerHTML=y+" "+pl(y,["год","года","лет"])+", "+m+" мес., "+d+" дн."+'<div class="mu" style="margin-top:8px">Всего прожито дней: '+Math.floor((n-b)/864e5)+"</div>"}$("dt").oninput=u;u()});
+add("timecalc","Калькулятор времени",function(){
+ var f=function(i){return'<div class="row" style="margin-top:8px"><input type="number" id="h'+i+'" value="1" min="0"> ч <input type="number" id="m'+i+'" value="30" min="0"> м <input type="number" id="s'+i+'" value="0" min="0"> с</div>'};
+ page("Калькулятор времени",'<section class="pn">'+f(1)+'<div class="row" style="margin-top:8px"><select id="op"><option value="1">+ сложить</option><option value="-1">− вычесть</option></select></div>'+f(2)+'<div class="res" id="o"></div></section>');
+ function v(i){return+$("h"+i).value*3600+ +$("m"+i).value*60+ +$("s"+i).value}
+ function u(){var r=v(1)+ +$("op").value*v(2),a=Math.abs(r);$("o").textContent=(r<0?"−":"")+p(Math.floor(a/3600))+":"+p(Math.floor(a/60)%60)+":"+p(a%60)}
+ document.querySelectorAll("#main input,#op").forEach(function(e){e.oninput=u});u()});
+add("days","Калькулятор дней",function(){
+ page("Калькулятор дней",'<section class="pn"><div class="row" style="margin-top:0"><label>С<input type="date" id="a" value="'+ds(new Date())+'"></label><label>По<input type="date" id="b" value="'+ds(new Date(Date.now()+30*864e5))+'"></label></div><div class="res" id="o"></div></section>');
+ function u(){var d=Math.round((new Date($("b").value)-new Date($("a").value))/864e5);$("o").innerHTML=isNaN(d)?"":d+" "+pl(d,["день","дня","дней"])+'<div class="mu">'+(d/7).toFixed(1)+" нед.</div>"}$("a").oninput=$("b").oninput=u;u()});
+add("tabata","Табата таймер",function(){
+ page("Табата таймер",'<section class="pn"><div class="row" style="margin-top:0"><label>Работа, с<input type="number" id="w" value="20"></label><label>Отдых, с<input type="number" id="r" value="10"></label><label>Раундов<input type="number" id="n" value="8"></label></div><div class="big" id="t" style="margin-top:20px">00:20</div><div class="res" id="o">Готов</div><div class="row"><button class="btn go" id="g">Старт</button></div></section>');
+ var run=false,ph=0,rd=1,left=0;
+ $("g").onclick=function(){run=!run;this.textContent=run?"Стоп":"Старт";this.classList.toggle("run",run);if(run){ph=0;rd=1;left=+$("w").value;beep(990)}else $("o").textContent="Готов"};
+ every(function(){if(!run)return;$("t").textContent=p(Math.floor(left/60))+":"+p(left%60);$("o").textContent=(ph?"Отдых":"Работа")+" · раунд "+rd+" из "+$("n").value;if(left--<=0){if(ph){rd++;if(rd>+$("n").value){run=false;$("g").textContent="Старт";$("g").classList.remove("run");$("o").textContent="Готово!";beep(440);return}}ph^=1;left=+$(ph?"r":"w").value;beep(ph?440:990)}},1000)});
+function conv(id,t,f,to){add(id,t,function(){
+ var U=[["секунды",1],["минуты",60],["часы",3600],["сутки",86400],["недели",604800]],o=function(s){return U.map(function(u,i){return'<option value="'+u[1]+'"'+(i==s?" selected":"")+">"+u[0]+"</option>"}).join("")};
+ page(t,'<section class="pn"><div class="row" style="margin-top:0"><input type="number" id="v" value="1" style="width:120px"><select id="a">'+o(f)+'</select><span>→</span><select id="b">'+o(to)+'</select></div><div class="res" id="o"></div></section>');
+ function u(){var r=$("v").value*$("a").value/$("b").value;$("o").textContent=+r.toFixed(6)}$("v").oninput=$("a").onchange=$("b").onchange=u;u()})}
+conv("converter","Конвертер времени",2,0);conv("conv-hs","Часы в секунды",2,0);conv("conv-hm","Часы в минуты",2,1);conv("conv-mh","Минуты в часы",1,2);conv("conv-ms","Минуты в секунды",1,0);
+
+/* ---- calendar ---- */
+add("calendar","Календарь",function(){
+ var y=new Date().getFullYear(),n=new Date(),h="";
+ for(var m=0;m<12;m++){var f=(new Date(y,m,1).getDay()+6)%7,dm=new Date(y,m+1,0).getDate(),t="<tr>"+"<th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr><tr>",i;
+  for(i=0;i<f;i++)t+="<td></td>";
+  for(var d=1;d<=dm;d++){t+="<td"+(y==n.getFullYear()&&m==n.getMonth()&&d==n.getDate()?' class="today"':"")+">"+d+"</td>";if((f+d)%7==0&&d<dm)t+="</tr><tr>"}
+  h+='<table><caption>'+MN[m][0].toUpperCase()+MN[m].slice(1)+"</caption>"+t+"</tr></table>"}
+ page("Календарь "+y+" год",'<div class="cal">'+h+"</div>")});
+add("week","Номер недели сейчас",function(){
+ var d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+3-(d.getDay()+6)%7);var w=1+Math.round(((d-new Date(d.getFullYear(),0,4))/864e5-3+(new Date(d.getFullYear(),0,4).getDay()+6)%7)/7);
+ page("Номер недели сейчас",'<section class="pn"><div class="big">'+w+'</div><div class="mu">неделя '+d.getFullYear()+" года (по ISO)</div></section>")});
+add("moon","Лунный календарь",function(){
+ var sy=29.530588853,a=((Date.now()-Date.UTC(2000,0,6,18,14))/864e5)%sy;if(a<0)a+=sy;var f=a/sy,il=Math.round((1-Math.cos(2*Math.PI*f))/2*100),
+ nm=f<.03||f>.97?"Новолуние":f<.22?"Растущий серп":f<.28?"Первая четверть":f<.47?"Растущая Луна":f<.53?"Полнолуние":f<.72?"Убывающая Луна":f<.78?"Последняя четверть":"Убывающий серп",
+ nx=function(d){return new Date(Date.now()+d*864e5).toLocaleDateString("ru-RU",{day:"numeric",month:"long"})};
+ page("Лунный календарь",'<section class="pn"><div class="big">'+"🌑🌒🌓🌔🌕🌖🌗🌘".match(/./gu)[Math.round(f*8)%8]+'</div><div class="res">'+nm+'</div><div class="mu" style="margin-top:8px">Возраст Луны: '+a.toFixed(1)+" дн. · Освещённость: "+il+"%<br>Следующее полнолуние: "+nx((sy/2-a+sy)%sy)+" · Новолуние: "+nx(sy-a)+"</div></section>")});
+add("distance","Расстояние между городами",function(){
+ page("Расстояние между городами",'<section class="pn"><div class="row" style="margin-top:0"><select id="a">'+copts(0)+'</select><span>→</span><select id="b">'+copts(11)+'</select></div><div class="res" id="o"></div></section>');
+ function u(){var a=C[$("a").value],b=C[$("b").value],r=Math.PI/180,dl=(b[2]-a[2])*r,dn=(b[3]-a[3])*r,x=Math.sin(dl/2)**2+Math.cos(a[2]*r)*Math.cos(b[2]*r)*Math.sin(dn/2)**2,k=12742*Math.asin(Math.sqrt(x));
+  $("o").innerHTML=Math.round(k).toLocaleString("ru-RU")+' км<div class="mu">'+Math.round(k*.621371).toLocaleString("ru-RU")+" миль, по прямой</div>"}$("a").onchange=$("b").onchange=u;u()});
+add("watches","Лучшие смарт-часы",function(){
+ page("Лучшие смарт-часы",'<div class="art" style="margin-top:0"><p>Выбирая смарт-часы, смотрите на четыре вещи: совместимость с вашим телефоном, время работы от батареи, точность датчиков пульса и GPS и удобство ремешка.</p><h2>Для спорта</h2><p>Нужны точный GPS, пульсометр и запас хода от недели. Подойдут спортивные часы Garmin, Coros и Amazfit.</p><h2>Для повседневной жизни</h2><p>Важны яркий экран, уведомления и оплата. Хорошо работают Apple Watch для iPhone и Galaxy Watch для Android.</p><h2>Для детей и пожилых людей</h2><p>Ищите кнопку SOS, GPS-трекер и защиту от воды.</p></div>')});
+
+/* ---- menu ---- */
+var L=function(id,t){return[id,t]};
+MENU=[L("stopwatch","Секундомер"),L("timer","Таймер Онлайн"),
+ {g:"Время",i:[L("cities","Время в городах"),L("sun","Восход и закат солнца"),L("plus","Сколько будет через"),L("until","Сколько осталось до")]},
+ {g:"События",i:[L("ny","Сколько осталось до Нового года"),L("holidays","Праздники")]},
+ {g:"Сезоны",i:[["s-vesna","Сколько до начала весны"],["s-konec-vesny","Сколько до конца весны"],["s-leto","Сколько до начала лета"],["s-konec-leta","Сколько до конца лета"],["s-osen","Сколько до начала осени"],["s-konec-oseni","Сколько до конца осени"],["s-zima","Сколько до начала зимы"],["s-konec-zimy","Сколько до конца зимы"]]},
+ {g:"Даты",i:[["d-1-yanvarya","Сколько дней до 1 января"],["d-1-marta","Сколько дней до 1 марта"],["d-1-iyunya","Сколько дней до 1 июня"],["d-1-sentyabrya","Сколько дней до 1 сентября"],["until","Другие даты"],["date-plus","Какое число будет через"],["weekday","Какой день недели будет"]]},
+ {g:"Дни недели",i:[["w-ponedelnik","Сколько до понедельника"],["w-vtornik","Сколько до вторника"],["w-sreda","Сколько до среды"],["w-chetverg","Сколько до четверга"],["w-pyatnica","Сколько до пятницы"],["w-subbota","Сколько до субботы"],["w-voskresenye","Сколько до воскресенья"]]},
+ {g:"Инструменты",i:[L("clock","Стрелочные часы"),L("metronome","Метроном"),L("alarm","Будильник"),L("weekday","День недели по дате"),L("age","Калькулятор возраста"),L("timecalc","Калькулятор времени"),L("days","Калькулятор дней"),L("tabata","Табата таймер")]},
+ {g:"Сколько прошло",i:[2026,2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015].map(function(y){return["y-"+y,y+" год"]})},
+ {g:"Конвертер",i:[L("converter","Конвертер времени"),L("conv-hs","Часы в секунды"),L("conv-hm","Часы в минуты"),L("conv-mh","Минуты в часы"),L("conv-ms","Минуты в секунды")]},
+ {g:"Календарь",i:[L("calendar","Календарь 2026 год"),L("week","Номер недели сейчас"),L("moon","Лунный календарь")]},
+ L("distance","Расстояние между городами"),L("watches","Лучшие смарт-часы")];
+function a(x){return'<a href="#'+x[0]+'" data-id="'+x[0]+'">'+x[1]+"</a>"}
+$("nav").innerHTML=MENU.map(function(m){return m.g?"<details><summary>"+m.g+"</summary>"+m.i.map(a).join("")+"</details>":a(m)}).join("");
+
+function route(){
+ off.forEach(function(f){f()});off=[];
+ var id=location.hash.slice(1);if(!R[id])id="stopwatch";
+ R[id][1]();document.title=id==="stopwatch"?"Секундомер онлайн — бесплатно, с кругами и точностью до сотых":R[id][0]+" — Секундомер онлайн";
+ if(id==="stopwatch")M.insertAdjacentHTML("beforeend",'<section class="art seo-copy" aria-label="О секундомере"><h2>Бесплатный секундомер онлайн</h2><p>Бесплатный секундомер онлайн помогает точно измерять время прямо в браузере. Нажмите «Старт» и наблюдайте за отсчётом с точностью до сотых секунды. Кнопка «Пауза» остановит секундомер, а «Продолжить» возобновит измерение с того же значения. Сброс возвращает счётчик к нулю.</p><h2>Круги и результаты измерений</h2><p>Во время забега, тренировки или нескольких этапов работы нажимайте «Круг», чтобы сохранить промежуточный результат. Таблица показывает длительность каждого круга и общее время, а лучший и самый медленный отрезки выделяются отдельно. Результаты сохраняются в браузере и остаются после обновления страницы.</p><h2>Для спорта, учёбы и повседневных задач</h2><p>Включите полноэкранный режим кнопкой ⛶, чтобы удобно следить за большими цифрами. Секундомер работает на телефоне, планшете и компьютере без установки программы. Управляйте отсчётом с клавиатуры: пробел — старт или пауза, L — новый круг, R — сброс. Используйте онлайн-секундомер для спорта, учёбы, готовки, экспериментов и контроля задач.</p></section>');
+ M.insertAdjacentHTML("beforeend",'<footer class="site-footer"><a href="https://seobomba.net/">Раскрутка сайта в поисковиках</a></footer>');
+ [].forEach.call(document.querySelectorAll("#nav a"),function(e){var on=e.dataset.id==id;e.classList.toggle("on",on);if(on&&e.parentNode.tagName=="DETAILS")e.parentNode.open=true});
+ document.body.classList.remove("open");window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+$("opn").onclick=function(){document.body.classList.remove("shut");document.body.classList.add("open")};
+$("cls").onclick=function(){if(window.matchMedia("(min-width:861px)").matches)document.body.classList.add("shut");else document.body.classList.remove("open")};
+route();
+})();
+</script>
+</body>
+</html>
